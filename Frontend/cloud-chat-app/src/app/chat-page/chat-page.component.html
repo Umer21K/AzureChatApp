@@ -1,0 +1,55 @@
+<div class="main-container">
+    <div class="sidebar">
+        <div class="chats-heading">Chats</div>
+        <div class="search-bar">
+            <input placeholder="Search for chat" [(ngModel)]="searchChat">
+        </div>
+
+        <div class="chat-list">
+            <ng-container *ngFor="let room of chats | chatFilter: searchChat.trim()">
+                <p class="chat-item" (click)="selectChat(room)">{{ room.roomname }}</p>
+            </ng-container>
+        </div>
+
+        <div class="button-container">
+            <button class="sidebar-button" (click)="newChat()">New Chat</button>
+        </div>
+    </div>
+    <div *ngIf="showNewChatPopup" class="new-chat-popup">
+        <h2 style="text-align: center;border: 2px solid black;">Select a user</h2>
+        <div class="new-chat-search-bar">
+            <input placeholder="Search for chat" [(ngModel)]="searchNewChat">
+        </div>
+        <div
+            style="display:flex; justify-content: center; align-items: center; padding: 10px; border: 2px solid black;">
+            <button [disabled]="selectedNewChatId === '-1'" (click)="createNewChat()">Create new chat</button>
+            <p style="margin-left: auto;">Currently selected: {{selectedNewChatName}}</p>
+        </div>
+        <ng-container *ngFor="let user of allUsers | userFilter: searchNewChat.trim()">
+            <p class="new-chat-item" (click)="selectNewUser(user)">{{ user.username }} </p>
+        </ng-container>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>{{ selectedChat.roomname }}</h2>
+        </div>
+        <button class="logout-button" (click)="logOut()">Logout</button>
+        <div class="chat-background" #scrollableDiv>
+            <ng-container *ngFor="let message of messages">
+                <div class="message"
+                    [ngClass]="{'sent': message.SenderID == currentUserId, 'received': message.SenderID != currentUserId}">
+                    {{ message.MessageText }}
+                    <div class="timestamp">
+                        {{ message.Timestamp | date: 'd-MMM-yy hh:mm' }}
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="chat-input">
+            <textarea [(ngModel)]="messageText" class="textbox" placeholder="Type here..."></textarea>
+            <button class="send-button" [disabled]="messageText === '' || selectedChat.roomid ==='-1'"
+                (click)="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>

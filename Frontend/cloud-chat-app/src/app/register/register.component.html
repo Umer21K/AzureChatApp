@@ -1,0 +1,57 @@
+<div class="main-container">
+    <form [formGroup]="registerForm" class="form-container">
+        <label for="name">Username</label>
+        <input matInput class="form-field" placeholder="Enter username" formControlName="name" type="text">
+
+        <small class="errors" *ngIf="registerForm.controls['name'].invalid &&
+            (registerForm.controls['name'].touched || registerForm.controls['name'].dirty) &&
+            registerForm.controls['name'].errors?.['required']">
+            *Username is a required field
+        </small>
+
+        <label for="email">Email</label>
+        <input matInput class="form-field" placeholder="Enter email" formControlName="email" type="email">
+
+
+        <small class="errors" *ngIf="registerForm.controls['email'].invalid &&
+            (registerForm.controls['email'].touched) &&
+            registerForm.controls['email'].errors?.['required']">
+            *Email is a required field
+        </small>
+
+        <small class="errors" *ngIf="registerForm.controls['email'].invalid &&
+            (registerForm.controls['email'].touched) &&
+            registerForm.controls['email'].errors?.['email']">
+            *Invalid email
+        </small>
+
+        <label for="password">Password</label>
+        <input matInput class="form-field" placeholder="Enter password" formControlName="password" type="password">
+
+        <ng-container *ngIf="registerForm.controls['password'].invalid &&
+            (registerForm.controls['password'].touched || registerForm.controls['password'].dirty)">
+            <small *ngIf="registerForm.controls['password'].errors?.['required']" class="errors">
+                *Password is a required field
+            </small>
+            <small *ngIf="registerForm.controls['password'].errors?.['minlength']" class="errors">
+                *Password should be minimum 8 characters
+            </small>
+        </ng-container>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input matInput class="form-field" placeholder="Confirm password" formControlName="confirmPassword"
+            type="password">
+
+        <ng-container *ngIf="registerForm.controls['confirmPassword'].invalid &&
+            (registerForm.controls['confirmPassword'].touched || registerForm.controls['confirmPassword'].dirty)">
+            <small *ngIf="registerForm.controls['confirmPassword'].errors?.['required']" class="errors">
+                *Confirm password is a required field
+            </small>
+            <small *ngIf="registerForm.controls['confirmPassword'].errors?.['minlength']" class="errors">
+                *Password should be minimum 8 characters
+            </small>
+        </ng-container>
+        <button class="register-button" (click)="register()" [disabled]="registerForm.invalid">Register</button>
+    </form>
+    <button class="return-button" (click)="back()">Return</button>
+</div>

@@ -1,0 +1,24 @@
+<div class="main-container">
+    <form [formGroup]="loginForm" class="form-container" (ngSubmit)="login()">
+        <label for="email">Email</label>
+        <input matInput class="form-field" placeholder="Enter email" formControlName="email" type="text">
+
+        <small class="errors" *ngIf="loginForm.controls['email'].invalid &&
+            (loginForm.controls['email'].touched) &&
+            loginForm.controls['email'].errors?.['required']">
+            *Email is a required field
+        </small>
+
+        <label for="password">Password</label>
+        <input matInput class="form-field" placeholder="Enter password" formControlName="password" type="password">
+
+        <small class="errors" *ngIf="loginForm.controls['password'].invalid &&
+            (loginForm.controls['password'].touched || loginForm.controls['password'].dirty) &&
+            loginForm.controls['password'].errors?.['required']">
+            *Password is a required field
+        </small>
+
+        <button class="login-button" type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+    <button class="return-button" (click)="back()">Return</button>
+</div>

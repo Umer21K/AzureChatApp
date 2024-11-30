@@ -1,0 +1,81 @@
+.main-container {
+    height: 100vh;
+    background-image: url('/images/retro_background.png');
+    background-color: #91BBFF;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.batein-container {
+    position: absolute;
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.batein {
+    max-width: 100%;
+    margin: auto;
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 15vh;
+    gap: 20px;
+}
+
+button {
+    min-width: 120px;
+    height: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 5px 5px #000;
+    color: #000000;
+    background-color: #91BBFF;
+    border: 2px solid #000000;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #E1EDFF;
+}
+
+button:active {
+    box-shadow: 0 0 #000000;
+    transform: translate(4px, 4px);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 575.98px) {
+    .main-container {
+        height: 100%;
+    }
+
+    .batein-container {
+        width: 90%;
+    }
+}
+
+@media screen and (max-height: 575.98px) and (orientation: landscape) {
+    .main-container {
+        height: 100%;
+    }
+
+    .batein {
+        width: 90%;
+    }
+
+    .auth-buttons {
+        bottom: 5%;
+        flex-direction: row;
+    }
+}

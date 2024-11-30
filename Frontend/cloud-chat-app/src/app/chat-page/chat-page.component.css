@@ -1,0 +1,342 @@
+/* Main container to hold the sidebar and chat */
+.main-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar for contacts */
+.sidebar {
+    position: relative;
+    width: 15%;
+    height: 100%;
+    background-color: #E7F4FF;
+    border: 4px solid #000000;
+    overflow: hidden;
+}
+
+.logout-button {
+    position: absolute;
+    right: 0;
+    top: 2.5%;
+    width: 150px;
+    margin: auto 10px;
+    background-color: red;
+    color: white;
+    border: 3px solid #000000;
+    cursor: pointer;
+}
+
+.search-bar {
+    position: absolute;
+    top: 10%;
+    height: 10%;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 4px solid #000000;
+    display: flex;
+}
+
+input {
+    width: 100%;
+}
+
+.chat-list {
+    position: absolute;
+    width: 100%;
+    top: 20%;
+    /* border: 4px solid #000000; */
+    height: 70%;
+    overflow-y: auto;
+    transition: all 0.1s ease-in-out;
+}
+
+.chat-item {
+    border-bottom: 4px solid #000000;
+    padding: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.new-chat-popup {
+    position: absolute;
+    left: 5%;
+    bottom: 10%;
+    width: 25%;
+    height: 50%;
+    background-color: #91BBFF;
+    border: 4px solid black;
+    z-index: 1;
+    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.new-chat-search-bar {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid #000000;
+    display: flex;
+}
+
+.new-chat-item {
+    border: 2px solid #000000;
+    padding: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 10%;
+    display: flex;
+}
+
+.sidebar-button {
+    width: 100%;
+    height: 100%;
+    background-color: #E7F4FF;
+    border: 4px solid #000000;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.8rem;
+    box-shadow: 5px 5px 0 #000;
+    transition: all 0.1s ease-in-out;
+}
+
+.sidebar-button:hover,
+.chat-item:hover {
+    box-shadow: 10px 10px #000;
+    background-color: #91BBFF;
+    transform: translateY(-5px);
+}
+
+.sidebar-button:active,
+.chat-item:active {
+    box-shadow: 2px 2px #000;
+    background-color: #E7F4FF;
+    transform: translateY(3px);
+    /* Simulate pressing down */
+    box-shadow: 3px 3px 0 #000;
+}
+
+.chats-heading {
+    /* position: absolute; */
+    width: 100%;
+    padding: 15px;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    font-size: 2rem;
+    text-align: center;
+}
+
+/* Chat container */
+.chat-container {
+    position: relative;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat header */
+.chat-header {
+    height: 10%;
+    border: 4px solid black;
+    border-left: none;
+    padding: 15px;
+    margin: 0;
+    background-color: #3F76A4;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+}
+
+/* Chat background for messages */
+.chat-background {
+    flex: 1;
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    height: 80%;
+    background-image: url('/images/chat_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #eff8e7;
+    overflow-y: auto;
+}
+
+/* Chat input area */
+.chat-input {
+    position: absolute;
+    bottom: 0;
+    height: 10%;
+    width: 100%;
+    display: flex;
+    background-color: #3F76A4;
+    border: 4px solid #000000;
+    border-left: none;
+}
+
+.textbox {
+    margin: auto;
+    height: 10%;
+    border: 1px solid #ccc;
+    height: 50%;
+    width: 80%;
+    text-indent: 2.5%;
+    font-size: 1rem;
+}
+
+.send-button {
+    margin: auto;
+    width: 150px;
+    min-width: 50px;
+    background-color: #E7F4FF;
+    border: 3px solid #000000;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #91BBFF;
+}
+
+.send-button:disabled {
+    cursor: not-allowed;
+}
+
+.message {
+    width: fit-content;
+    max-width: 60%;
+    min-width: 50px;
+    padding: 10px;
+    word-wrap: break-word;
+    color: #FFFFFF;
+    margin: 10px 10px;
+}
+
+.received {
+    background-color: #587fff;
+    margin-right: auto;
+    border-left: 10px solid transparent;
+    border-bottom: 10px solid #eff8e7;
+}
+
+.sent {
+    background-color: #3f55aa;
+    margin-left: auto;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #eff8e7;
+}
+
+.timestamp {
+    margin-right: auto;
+    font-size: 0.55rem;
+    text-align: right;
+}
+
+/*Responsive Adjustments */
+@media screen and (max-width: 575.98px) {
+    * {
+        font-size: 0.8rem;
+    }
+
+    .main-container {
+        height: 100%;
+    }
+
+    .chat-container {
+        width: 70%;
+    }
+
+    .chats-heading {
+        padding: 5px;
+    }
+
+    .sidebar {
+        width: 30%;
+    }
+
+    .button-container {
+        flex-direction: column;
+    }
+
+    .sidebar-button {
+        width: 100%;
+        height: 50%;
+    }
+
+    .new-chat-popup {
+        width: 50%;
+    }
+
+    .logout-button,
+    .send-button {
+        width: 55px;
+    }
+
+    .textbox {
+        width: 60%;
+        border: 1px solid #ccc;
+        text-indent: 2.5%;
+        font-size: 0.75rem;
+    }
+}
+
+@media screen and (max-height: 575.98px) and (orientation: landscape) {
+    * {
+        font-size: 0.8rem;
+    }
+
+    .main-container {
+        height: 100%;
+    }
+
+    .chat-container {
+        width: 70%;
+    }
+
+    .chats-heading {
+        padding: 5px;
+        /* font-size: 1.5rem; */
+    }
+
+    .chat-header {
+        padding: 0px;
+    }
+
+    .sidebar {
+        width: 30%;
+    }
+
+    .sidebar-button {
+        font-size: xx-small;
+        width: 100%;
+        height: 100%;
+    }
+
+    .search-bar {
+        height: 20%;
+    }
+
+    .chat-list {
+        top: 30%;
+        height: 60%;
+    }
+
+    .logout-button,
+    .send-button {
+        width: 55px;
+        height: 25px;
+    }
+
+    .textbox {
+        width: 75%;
+        height: 75%;
+        border: 1px solid #ccc;
+        text-indent: 2.5%;
+    }
+}

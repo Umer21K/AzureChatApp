@@ -1,0 +1,111 @@
+.main-container {
+    height: 100vh;
+    background-image: url('/images/retro_background.png');
+    background-color: #91BBFF;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.form-container {
+    position: absolute;
+    width: 40%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+    background-color: #dce7d2;
+    padding: 20px;
+    border: 10px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-field {
+    width: 75%;
+    height: 20%;
+    margin: 10px auto;
+    background-color: white;
+    border: 3px solid black;
+}
+
+button {
+    min-width: 120px;
+    max-height: 50px;
+    cursor: pointer;
+    box-shadow: 5px 5px #000;
+    color: #000000;
+    background-color: #91BBFF;
+    border: 2px solid #000000;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.login-button {
+    margin: 10px auto;
+}
+
+.return-button {
+    position: absolute;
+    bottom: 5%;
+}
+
+button:hover {
+    background-color: #E1EDFF;
+}
+
+button:active {
+    box-shadow: 0 0 #000000;
+    transform: translate(4px, 4px);
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 575.98px) {
+    .main-container {
+        height: 100%;
+    }
+
+    .form-container {
+        width: 80%;
+        height: fit-content;
+    }
+
+    .form-field {
+        width: 90%;
+        height: 25%;
+    }
+}
+
+@media screen and (max-height: 575.98px) and (orientation: landscape) {
+    * {
+        font-size: 0.85rem;
+    }
+
+    .main-container {
+        height: 100%;
+    }
+
+    .form-container {
+        height: 70%;
+        height: fit-content;
+    }
+
+    .form-field {
+        width: 90%;
+    }
+
+    .return-button {
+        bottom: 2.5%;
+    }
+}
