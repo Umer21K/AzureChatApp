@@ -189,4 +189,4 @@ def handle_leave_room(data):
     leave_room(room)
 
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", port=8000)
+    socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
