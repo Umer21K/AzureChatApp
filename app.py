@@ -4,12 +4,17 @@ from flask_cors import CORS
 from blob_storage import *
 from database import *
 import os
+from werkzeug.middleware.proxy_fix import ProxyFix
+
+
 
 
 
 app = Flask(__name__, static_folder='static', template_folder='static')
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', logger=True, engineio_logger=True)
 CORS(app)  # Enable CORS for frontend-backend communication
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 
 def handle_error(message, error, status_code=500):
     app.logger.error(f"{message}: {error}")
