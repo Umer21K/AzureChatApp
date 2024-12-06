@@ -1,5 +1,5 @@
 annotated-types==0.7.0
-azure-core==1.28.0
+azure-core
 azure-cosmos==4.9.0
 azure-identity==1.13.0
 azure-keyvault==4.2.0
