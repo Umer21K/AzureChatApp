@@ -4,6 +4,7 @@ from flask_cors import CORS
 from blob_storage import *
 from database import *
 # from blob_storage import *
+from dotenv import load_dotenv
 import os
 
 app = Flask(__name__, static_folder='static', template_folder='static')
