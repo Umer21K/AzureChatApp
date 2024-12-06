@@ -3,8 +3,8 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from blob_storage import *
 from database import *
-
 import os
+
 
 
 app = Flask(__name__, static_folder='static', template_folder='static')
@@ -14,14 +14,6 @@ CORS(app)  # Enable CORS for frontend-backend communication
 def handle_error(message, error, status_code=500):
     app.logger.error(f"{message}: {error}")
     return jsonify({'success': False, 'message': 'An unexpected error occurred. Please try again later.'}), status_code
-
-@app.before_request
-def remove_double_slash():
-    """Ensure no double-slash paths in requests."""
-    if "//" in request.path:
-        return jsonify({'success': False, 'message': 'Invalid request URL'}), 400
-
-
 
 @app.route('/')
 @app.route('/<path:path>')
