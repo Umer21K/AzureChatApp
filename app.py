@@ -3,7 +3,9 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from blob_storage import *
 from database import *
+
 import os
+
 
 app = Flask(__name__, static_folder='static', template_folder='static')
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet', logger=True, engineio_logger=True)
@@ -18,6 +20,8 @@ def remove_double_slash():
     """Ensure no double-slash paths in requests."""
     if "//" in request.path:
         return jsonify({'success': False, 'message': 'Invalid request URL'}), 400
+
+
 
 @app.route('/')
 @app.route('/<path:path>')
@@ -35,6 +39,7 @@ async def add_user_api():
         email = data.get('email')
 
         user_info = await add_user(name, password, email)
+        
         if user_info:
             return jsonify({'success': True, 'userid': user_info['id'], 'username': user_info['name']}), 201
         else:
@@ -48,11 +53,13 @@ async def validate_user_api():
         data = request.json
         email = data.get('email')
         password = data.get('password')
+        
         user_info = await validate_user(password, email)
+        
         if user_info:
             return jsonify({'success': True, 'userid': user_info['userid'], 'username': user_info['username']}), 200
         else:
-            return jsonify({'success': False, 'message': 'Invalid credentials'}), 200
+            return jsonify({'success': False,'message': 'Invalid credentials'}), 200
     except Exception as e:
         return handle_error("Error validating user", e)
 
@@ -60,24 +67,42 @@ async def validate_user_api():
 async def get_other_users_api(userid):
     try:
         users = await get_other_users(userid)
+
+        # Return success response
         return jsonify({'success': True, 'data': users}), 200
     except Exception as e:
+        # Log the error for debugging
+        app.logger.error(f"Error fetching other users for userid {userid}: {e}")
+        
         return handle_error("Error getting users", e)
 
 @app.route('/get_rooms/<userid>', methods=['GET'])
 async def get_rooms_api(userid):
     try:
+        # Fetch rooms for the given user ID
         rooms = await get_rooms(userid)
+
+        # Return success response with room data
         return jsonify({'success': True, 'data': rooms}), 200
     except Exception as e:
+        # Log the error for debugging
+        app.logger.error(f"Error fetching rooms for user {userid}: {e}")
+
+        # Return a generic error message
         return handle_error("Error getting rooms", e)
+
 
 @app.route('/get_messages/<roomid>', methods=['GET'])
 async def get_messages_api(roomid):
     try:
         messages = await get_messages(roomid)
+
         return jsonify({'success': True, 'data': messages}), 200
     except Exception as e:
+        # Log the error for debugging
+        app.logger.error(f"Error fetching messages for user {roomid}: {e}")
+
+        # Return a generic error message
         return handle_error("Error getting messages", e)
 
 @app.route('/create_room', methods=['POST'])
@@ -86,9 +111,14 @@ async def create_room_api():
         data = request.json
         User1 = data['User1']
         User2 = data['User2']
+
         await create_room(User1, User2)
-        return jsonify({'success': True, 'message': 'Chat created successfully'}), 201
-    except Exception as e:
+        
+        return jsonify({'success': True, 'message': 'Chat created successfuly'}),  201
+    except Exception as e:# Log the error for debugging
+        app.logger.error(f"Error creating room for user {User1} and user 2 {User2}: {e}")
+
+        # Return a generic error message
         return handle_error("Error creating room", e)
 
 @app.route('/send_message', methods=['POST'])
@@ -97,8 +127,12 @@ async def send_message_api():
         data = request.json
         message = data['message']
         await send_message(message)
-        return jsonify({'success': True, 'message': 'Message sent successfully'}), 201
+
+        return jsonify({'success': True, 'message': 'Message sent successfuly'}),  201
     except Exception as e:
+        app.logger.error(f"Error sending message {message}: {e}")
+
+        # Return a generic error message
         return handle_error("Error sending message", e)
 
 @app.route('/send_message_nimbus', methods=['POST'])
@@ -107,44 +141,61 @@ async def send_message_nimbus_api():
         data = request.json
         message = data['message']
         await chat_with_nimbus(message)
-        return jsonify({'success': True, 'message': 'Message sent successfully'}), 201
+        return jsonify({'success': True, 'message': 'Message sent successfuly'}),  201
     except Exception as e:
-        return handle_error("Error sending message to Nimbus", e)
+        app.logger.error(f"Error sending message {message} to nimbus: {e}")
+
+        # Return a generic error message
+        return handle_error("Error sending message to nimbus", e)
 
 @app.route('/send_file', methods=['POST'])
 async def send_file_api():
     try:
-        room_id = request.form.get('roomid')
-        file = request.files['file']
-        file_name = file.filename
-        file_data = file.read()
+        room_id = request.form.get('roomid')  # Get the room ID from the form
+        file = request.files['file']  # Get the uploaded file
+        file_name = file.filename  # Extract the file name
+        file_data = file.read()  # Read the file content
+
+        # Call the Azure function to upload the file
         await send_file(room_id, file_data, file_name)
-        return jsonify({'success': True, 'message': 'File sent successfully'}), 201
+
+        return jsonify({'success': True, 'message': 'Image sent successfully'}), 201
     except Exception as e:
+        app.logger.error(f"Error sending file {file}: {e}")
+
+        # Return a generic error message
         return handle_error("Error sending file", e)
 
 @app.route('/get_files/<room_id>', methods=['GET'])
 async def get_files_api(room_id):
     try:
+        # Call the Azure function to get files
         files = await get_files(room_id)
         return jsonify({'success': True, 'files': files}), 200
     except Exception as e:
-        return handle_error("Error getting files", e)
+        app.logger.error(f"Error getting files in room {room_id}: {e}")
+
+        # Return a generic error message
+        return handle_error("Error getting file", e)
 
 @socketio.on('message')
 def handle_message(data):
     message = data['message']
     room = data['room']
     sender_name = data['senderName']
-    emit('message', {'message': message, 'room': room, 'senderName': sender_name}, to=room)
+
+    # Emit the message back to all clients in the room
+    emit('message', {'message': message, 'room': room, 'senderName': sender_name }, to=room)
 
 @socketio.on('join_room')
 def handle_join_room(data):
-    join_room(data['room'])
+    room = data['room']
+    join_room(room)
 
 @socketio.on('leave_room')
 def handle_leave_room(data):
-    leave_room(data['room'])
+    room = data['room']
+    leave_room(room)
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=8000)
