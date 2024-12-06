@@ -3,12 +3,12 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from blob_storage import *
 from database import *
-# from blob_storage import *
-from dotenv import load_dotenv
+
 import os
 
+
 app = Flask(__name__, static_folder='static', template_folder='static')
-socketio = SocketIO(app, cors_allowed_origins="https://cloudchatapp.azurewebsites.net", async_mode='eventlet', logger=True, engineio_logger=True)
+socketio = SocketIO(app, cors_allowed_origins="batey-cwerh7duhsh0efdx.eastasia-01.azurewebsites.net", async_mode='eventlet', logger=True, engineio_logger=True)
 CORS(app)  # Enable CORS for frontend-backend communication
 
 def handle_error(message, error, status_code=500):

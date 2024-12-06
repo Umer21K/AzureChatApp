@@ -7,7 +7,7 @@ import os
 load_dotenv()
 
 client_id = os.environ['AZURE_CLIENT_ID']
-tenant_id = os.environ['Azure_TENANT_ID']
+tenant_id = os.environ['AZURE_TENANT_ID']
 client_secret = os.environ['AZURE_CLIENT_SECRET']
 vault_url = os.environ['AZURE_VAULT_URL']
 
